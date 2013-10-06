@@ -1,4 +1,4 @@
-close all; clear all; clc;
+close all; clc;
 
 rng(0);       % regularize randomization for testing
 
@@ -37,30 +37,27 @@ for t=1:1:time/deltat
     for i=1:n
         for j=1:m
             if(io(i,j)==1)
-                length=floor(velocity(1,j)*deltat/h);
+                max_distance=floor(velocity(1,j)*deltat/h);
                 recombination=0;
                 if(i==1)
-                    io(i,j)=0;
                     iocolumn(1,j)=iocolumn(1,j)+1;
                 else
-                    for k=i-1:-1:max(1,i-length)
+                    for k=i-1:-1:max(1,i-max_distance)
                         if(vo(k,j)==1)
                             vo(k,j)=0;
-                            io(i,j)=0;
                             recombination=1;
                             break;
                         end
                     end
                     if(recombination==0)
-                        if(i-length>0)
-                            io(i,j)=0;
-                            io(i-length,j)=1;
+                        if(i-max_distance>0)
+                            io(i-max_distance,j)=1;
                         else
-                            io(i,j)=0;
                             iocolumn(1,j)=iocolumn(1,j)+1;
                         end
                     end
                 end
+                io(i,j)=0;
             end
         end
     end

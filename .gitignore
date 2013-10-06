@@ -1,4 +1,15 @@
 #################
+## This project
+#################
+
+# old
+old/
+
+# matlab
+.mat
+
+
+#################
 ## Eclipse
 #################
 
@@ -213,6 +224,3 @@ pip-log.txt
 
 #Mr Developer
 .mr.developer.cfg
-
-#old
-old/

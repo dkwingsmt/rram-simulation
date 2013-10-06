@@ -1,4 +1,7 @@
 close all; clear all; clc;
+
+rng(0);       % regularize randomization for testing
+
 n=41; %原子层数
 m=41; %长10nm
 h=0.25;  %单位nm
@@ -23,19 +26,14 @@ history_vo={};
 iocolumn=zeros(1,m);    %一列中的氧离子
 for v=1.1:0.1:voltage
 for t=1:1:time/deltat
-    vocolumn=zeros(1,m);    %一列中的氧空位
-    for i=1:n
-        for j=1:m
-            if(vo(i,j)==1)
-                vocolumn(1,j)=vocolumn(1,j)+1;
-            end
-        end
-    end
-    for i=1:m
-       Ei(1,i)=v/((n-1)*h-vocolumn(1,i)*h)/(1+vocolumn(1,i)*h/ratio/((n-1)*h-vocolumn(1,i)*h));
-       pg(1,i)=deltat/t0*exp(-(Ea-ganma*Ei(1,i))/(kb*T/qe));
-       velocity(1,i)=miu*Ei(1,i);
-    end
+
+    %% Calculate Vo configuration
+    vocolumn = sum(vo, 1);  % Amount of Vo for every column
+
+    Ei = v ./ ((n-1)*h-vocolumn*h) ./ (1+vocolumn*h/ratio/((n-1)*h-vocolumn*h));
+    pg = deltat/t0*exp(-(Ea-ganma*Ei)/(kb*T/qe));
+    velocity = miu*Ei;
+
     for i=1:n
         for j=1:m
             if(io(i,j)==1)
@@ -64,13 +62,14 @@ for t=1:1:time/deltat
                     end
                 end
             end
-            r=unifrnd(0,1);
-            if(vo(i,j)==0&&r<pg(1,j))
-                vo(i,j)=1;
-                io(i,j)=1;
-            end
         end
     end
+
+    r = unifrnd(0, 1, n, m);
+    do_generate = (vo(i,j)==0) & (r < repmat(pg, [n, 1])); 
+    vo(do_generate) = 1;
+    io(do_generate) = 1;
+
 end
 history_vo=[history_vo,{vo}];
 end

@@ -105,7 +105,8 @@ nvo2 = nvo^2;
 
 
 jc = R_vo' + diag(- sum(R_vo, 2) - Rin_u - Rin_d - Rout_d - Rout_u);
-jf = sparse([], [], [], nvo2, nvo, 3*nvo2);
+%jf = sparse([], [], [], nvo2, nvo, 3*nvo2);
+jf = sparse([], [], [], 0, nvo, 3*nvo2);
 %jf = zeros(nvo2, nvo);
 % Matrices to be put into jf in two methods
 % 1 1 1 
@@ -115,15 +116,30 @@ mat_vert = - R_vo' + R_vo;
 % 123
 %     123
 %         123
+jfi = zeros(3*nvo2, 1);
+jfj = zeros(3*nvo2, 1);
+jfs = zeros(3*nvo2, 1);
+jfnum = 0;
 mat_diag = - R_vo + R_vo';
 for i = 1:nvo    
     fprintf('%d', i)
-    m = sparse(diag(mat_vert(:, i)));
+    m = sparse(1:nvo, 1:nvo, mat_vert(:, i));
     m(i, :) = m(i, :) + mat_diag(i, :);
+    [nowjfi, nowjfj, nowjfs] = find(m);
+    nowjfend = jfnum + length(nowjfi);
+    jfi((jfnum+1):nowjfend) = nowjfi + (i-1)*nvo;
+    jfj((jfnum+1):nowjfend) = nowjfj;
+    jfs((jfnum+1):nowjfend) = nowjfs;
+    jfnum = nowjfend;
+    
+    %jf = [jf; sparse(m)];
     %m(abs(m)<(max(max(abs(m)))/1000)) = 0;
-    jf = [jf; sparse(m)];
     %jf(((i-1)*nvo+1) : (i*nvo), :) = m;
 end
+jfi = jfi(jfi ~= 0);
+jfj = jfj(jfi ~= 0);
+jfs = jfs(jfi ~= 0);
+jf = sparse(jfi, jfj, jfs);
 
 %% === Now solve ===
 f0 = ones(nvo, 1) * 0.5;

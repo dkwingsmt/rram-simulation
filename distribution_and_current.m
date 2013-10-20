@@ -27,6 +27,7 @@ for t=1:1:time/deltat
     pg = deltat/t0*exp(-(Ea-gamma*Ei)/(kb*T));
     velocity = miu*Ei;
 
+    r=unifrnd(0,1,1,m);   
     for i=1:n
         for j=1:m
             if(io(i,j)==1)
@@ -52,8 +53,7 @@ for t=1:1:time/deltat
                 end
                 io(i,j)=0;
             end
-            r=unifrnd(0,1);
-            if(vo(i,j)==0&&r<pg(1,j))
+            if(vo(i,j)==0&&r(1,j)<pg(1,j))
                 vo(i,j)=1;
                 io(i,j)=1;
             end

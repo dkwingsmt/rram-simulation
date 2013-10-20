@@ -134,7 +134,7 @@ end
 jfi = jfi(jfi ~= 0);
 jfj = jfj(jfi ~= 0);
 jfs = jfs(jfi ~= 0);
-jf = sparse(jfi, jfj, jfs);
+jf = sparse(jfi, jfj, jfs, nvo2, nvo);
 
 %% === Now solve ===
 f0 = ones(nvo, 1) * 0.5;

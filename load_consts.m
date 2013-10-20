@@ -10,11 +10,9 @@ n = 41;     % Number of layers of atoms
 m = 41;     % 10nm long
 h = 0.25e-9;% (m)
 T = 300;    % Global temperature (K)
-deltat = 0.00005;   % Initial step of time (s)
-time = 0.008;      % Total experiment time (s)
 
 %%--------------- Model constants ---------------
-Ea  = 1.0*qe;   % Average migration barrier height of oxygen ions in HfOx (J)
+Ea  = 0.66*qe;   % Average migration barrier height of oxygen ions in HfOx (J)
 t0 = 10^-13;    % 1/t0 -- Characteristic vibration frequency of oxygen ions (s)
 beta = 100;     % Regeneration probability factor (now assumed constant) (1)
 Etrap_e = 1.83*qe;  % Trap energy of an empty Vo below the conduction band of HfOx (J)
@@ -28,6 +26,6 @@ k_tunnel_ud = 1e14;
 
 me_eff = 0.1 * me;  % Electron effective mass for HfO2
 
-gamma=3e-9*qe;  %V*m
+gamma=1e-9*qe;  %m
 miu=2.5e-9;   %m^2/(V*s)
-ratio=100;  %氧空位与绝缘层的电阻率之比
+ratio=100;  %氧空位与绝缘层的电阻率之�?

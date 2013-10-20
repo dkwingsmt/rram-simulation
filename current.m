@@ -5,9 +5,9 @@ load_consts
 
 Curren=zeros(1,10);
 
-for k=1:1
+for k=1:20
 vo=history_vo{1,k};
-v = 1+0.1*k;      % Voltage of anode (higher y) to cathode (y=0) (V)
+v = 0.4+0.1*k;      % Voltage of anode (higher y) to cathode (y=0) (V)
 
 nh = n * h;
 mh = m * h;
